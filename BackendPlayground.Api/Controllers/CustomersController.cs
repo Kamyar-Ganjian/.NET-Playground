@@ -1,4 +1,4 @@
-using BackendPlayground.Api.Models;
+using BackendPlayground.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendPlayground.Api.Controllers;
@@ -7,20 +7,16 @@ namespace BackendPlayground.Api.Controllers;
 [Route("api/[controller]")]
 public class CustomersController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetCustomer()
+    private readonly CustomerService _customerService;
+
+    public CustomersController(CustomerService customerService)
     {
-        var customers = new List<Customer>
-        {
-            new()
-            {
-                Id = 1,
-                FirstName = "Kamyar",
-                LastName = "Ganjian",
-                Email = "kamyarganjian@gmail.com"
-            }
-        };
-        return Ok(customers);
+        _customerService = customerService;
+    }
+
+    [HttpGet]
+    public ActionResult GetAll()
+    {
+        return Ok(_customerService.GetAll());
     }
 }
-
