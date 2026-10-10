@@ -1,5 +1,27 @@
+# .NET build output
 bin/
 obj/
+
+# Dependencies
+node_modules/
 /packages/
+
+# JetBrains Rider
+.idea/
 riderModule.iml
-/_ReSharper.Caches/
+
+# ReSharper
+_ReSharper.Caches/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
