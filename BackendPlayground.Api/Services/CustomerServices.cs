@@ -4,16 +4,16 @@ namespace BackendPlayground.Api.Services;
 
 public class CustomerService
 {
-    private readonly List<Customer> _Customers =
+    private readonly List<Customer> _customers =
     [
-        new Customer
+        new()
         {
             Id = 1,
             FirstName = "Kamyar",
             LastName = "Ganjian",
             Email = "kamyar@example.com"
         },
-        new Customer
+        new()
         {
             Id = 2,
             FirstName = "Sara",
@@ -24,7 +24,17 @@ public class CustomerService
 
     public IReadOnlyList<Customer> GetAll()
     {
-        return _Customers.AsReadOnly();
+        return _customers.AsReadOnly();
+    }
+
+    public Customer Create(Customer customer)
+    {
+        customer.Id = _customers.Count == 0
+            ? 1
+            : _customers.Max(c => c.Id) + 1;
+
+        _customers.Add(customer);
+
+        return customer;
     }
 }
-
