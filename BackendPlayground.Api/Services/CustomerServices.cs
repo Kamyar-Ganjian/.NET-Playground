@@ -1,39 +1,28 @@
+using BackendPlayground.Api.Data;
 using BackendPlayground.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendPlayground.Api.Services;
 
 public class CustomerService
 {
-    private readonly List<Customer> _customers =
-    [
-        new()
-        {
-            Id = 1,
-            FirstName = "Kamyar",
-            LastName = "Ganjian",
-            Email = "kamyar@example.com"
-        },
-        new()
-        {
-            Id = 2,
-            FirstName = "Sara",
-            LastName = "Ahmadi",
-            Email = "sara@example.com"
-        }
-    ];
+    private readonly AppDbContext _dbContext;
 
-    public IReadOnlyList<Customer> GetAll()
+    public CustomerService(AppDbContext dbContext)
     {
-        return _customers.AsReadOnly();
+        _dbContext = dbContext;
     }
 
-    public Customer Create(Customer customer)
+    public async Task<List<Customer>> GetAllAsync()
     {
-        customer.Id = _customers.Count == 0
-            ? 1
-            : _customers.Max(c => c.Id) + 1;
+        return await _dbContext.Customers.ToListAsync();
+    }
 
-        _customers.Add(customer);
+    public async Task<Customer> CreateAsync(Customer customer)
+    {
+        _dbContext.Customers.Add(customer);
+
+        await _dbContext.SaveChangesAsync();
 
         return customer;
     }
