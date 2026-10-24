@@ -24,6 +24,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(Customer), StatusCodes.Status201Created)]
     public async Task<ActionResult<Customer>> Create(
         CreateCustomerRequest request)
     {
@@ -36,9 +37,6 @@ public class CustomersController : ControllerBase
 
         var createdCustomer = await _customerService.CreateAsync(customer);
 
-        return CreatedAtAction(
-            nameof(GetAll),
-            createdCustomer
-        );
+        return StatusCode(StatusCodes.Status201Created, createdCustomer);
     }
 }
