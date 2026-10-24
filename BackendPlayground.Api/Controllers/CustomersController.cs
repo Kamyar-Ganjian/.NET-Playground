@@ -1,3 +1,4 @@
+using BackendPlayground.Api.Models;
 using BackendPlayground.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,21 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult GetAll()
+    public async Task<ActionResult> GetAll()
     {
-        return Ok(_customerService.GetAll());
+        var customers = await _customerService.GetAllAsync();
+
+        return Ok(customers);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Customer>> Create(Customer customer)
+    {
+        var createdCustomer = await _customerService.CreateAsync(customer);
+
+        return CreatedAtAction(
+            nameof(GetAll),
+            createdCustomer
+        );
     }
 }
