@@ -24,8 +24,16 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Customer>> Create(Customer customer)
+    public async Task<ActionResult<Customer>> Create(
+        CreateCustomerRequest request)
     {
+        var customer = new Customer
+        {
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Email = request.Email
+        };
+
         var createdCustomer = await _customerService.CreateAsync(customer);
 
         return CreatedAtAction(
