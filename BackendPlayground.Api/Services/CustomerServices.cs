@@ -17,6 +17,12 @@ public class CustomerService
     {
         return await _dbContext.Customers.ToListAsync();
     }
+    
+    public async Task<Customer?> GetByIdAsync(int id)
+    {
+        return await _dbContext.Customers
+            .FirstOrDefaultAsync(customer => customer.Id == id);
+    }
 
     public async Task<Customer> CreateAsync(Customer customer)
     {

@@ -22,6 +22,21 @@ public class CustomersController : ControllerBase
 
         return Ok(customers);
     }
+    
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Customer>> GetById(int id)
+    {
+        var customer = await _customerService.GetByIdAsync(id);
+
+        if (customer is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(customer);
+    }
 
     [HttpPost]
     [ProducesResponseType(typeof(Customer), StatusCodes.Status201Created)]
