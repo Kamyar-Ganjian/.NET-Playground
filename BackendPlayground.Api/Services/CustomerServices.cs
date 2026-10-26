@@ -47,4 +47,17 @@ public class CustomerService
 
         return true;
     }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var customer = await _dbContext.Customers.FindAsync(id);
+
+        if (customer is null) return false;
+
+        _dbContext.Customers.Remove(customer);
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
 }
