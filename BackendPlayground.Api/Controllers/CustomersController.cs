@@ -68,4 +68,15 @@ public class CustomersController : ControllerBase
         if (!updated) return NotFound();
         return NoContent();
     }
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deleted = await _customerService.DeleteAsync(id);
+
+        if (!deleted) return NotFound();
+        return NoContent();
+    }
 }
