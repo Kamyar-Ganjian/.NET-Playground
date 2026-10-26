@@ -55,4 +55,17 @@ public class CustomersController : ControllerBase
             new { id = createdCustomer.Id },
             createdCustomer);
     }
+
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(
+        int id,
+        UpdateCustomerRequest request)
+    {
+        var updated = await _customerService.UpdateAsync(id, request);
+
+        if (!updated) return NotFound();
+        return NoContent();
+    }
 }
