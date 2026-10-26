@@ -16,13 +16,14 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetAll()
+    [ProducesResponseType(typeof(List<Customer>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<Customer>>> GetAll()
     {
         var customers = await _customerService.GetAllAsync();
 
         return Ok(customers);
     }
-    
+
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -30,10 +31,7 @@ public class CustomersController : ControllerBase
     {
         var customer = await _customerService.GetByIdAsync(id);
 
-        if (customer is null)
-        {
-            return NotFound();
-        }
+        if (customer is null) return NotFound();
 
         return Ok(customer);
     }
@@ -52,6 +50,9 @@ public class CustomersController : ControllerBase
 
         var createdCustomer = await _customerService.CreateAsync(customer);
 
-        return StatusCode(StatusCodes.Status201Created, createdCustomer);
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = createdCustomer.Id },
+            createdCustomer);
     }
 }

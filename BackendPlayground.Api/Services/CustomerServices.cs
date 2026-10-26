@@ -17,7 +17,7 @@ public class CustomerService
     {
         return await _dbContext.Customers.ToListAsync();
     }
-    
+
     public async Task<Customer?> GetByIdAsync(int id)
     {
         return await _dbContext.Customers
@@ -31,5 +31,20 @@ public class CustomerService
         await _dbContext.SaveChangesAsync();
 
         return customer;
+    }
+
+    public async Task<bool> UpdateAsync(int id, UpdateCustomerRequest request)
+    {
+        var customer = await _dbContext.Customers.FindAsync(id);
+
+        if (customer is null) return false;
+
+        customer.FirstName = request.FisrtName;
+        customer.LastName = request.LastName;
+        customer.Email = request.Email;
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
     }
 }
