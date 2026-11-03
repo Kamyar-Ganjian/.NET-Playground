@@ -43,6 +43,9 @@ namespace BackendPlayground.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Customers");
                 });
 #pragma warning restore 612, 618
